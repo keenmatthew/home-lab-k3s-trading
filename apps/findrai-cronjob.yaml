@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: findrai-auto-grow
+  namespace: default
+spec:
+  schedule: "0 6 * * *"
+  timeZone: "Australia/Brisbane" # AEST (UTC+10)
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 400 # Hard limit for the pod (slightly higher than curl timeout)
+      template:
+        spec:
+          containers:
+            - name: curl
+              image: curlimages/curl:latest
+              imagePullPolicy: IfNotPresent
+              args:
+                - /bin/sh
+                - -c
+                - |
+                  echo "Triggering auto_grow..."
+                  curl -fsSL --max-time 360 "https://findrai.io/auto_grow.php?pass=findr2026"
+          restartPolicy: OnFailure
