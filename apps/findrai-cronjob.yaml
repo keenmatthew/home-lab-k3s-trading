@@ -23,5 +23,5 @@ spec:
                 - -c
                 - |
                   echo "Triggering auto_grow..."
-                  curl -fsSL --max-time 360 "https://findrai.io/auto_grow.php?pass=findr2026"
+                  curl -fsSL --max-time 360 "https://findrai.io/auto_grow.php?key=findr2026"
           restartPolicy: OnFailure
